@@ -6,9 +6,12 @@ on:
     branches:
       - main
 
+permissions:
+  contents: read
+
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
 
     steps:
       - name: Download source files
@@ -25,8 +28,12 @@ jobs:
           distribution: temurin
           java-version: 21
 
-      - name: Install Android SDK
+      - name: Set up Android SDK
         uses: android-actions/setup-android@v3
+
+      - name: Install Android packages
+        run: |
+          sdkmanager "platform-tools" "platforms;android-35" "build-tools;35.0.0"
 
       - name: Create Android project
         run: |
@@ -38,13 +45,12 @@ jobs:
             "name": "nzi-pos-android",
             "version": "1.0.0",
             "private": true,
-            "scripts": {},
             "dependencies": {
-              "@capacitor/core": "^7.4.3",
-              "@capacitor/android": "^7.4.3"
+              "@capacitor/core": "7.4.3",
+              "@capacitor/android": "7.4.3"
             },
             "devDependencies": {
-              "@capacitor/cli": "^7.4.3"
+              "@capacitor/cli": "7.4.3"
             }
           }
           EOF
@@ -73,3 +79,4 @@ jobs:
           name: NZI-POS-Android-APK
           path: android/app/build/outputs/apk/debug/app-debug.apk
           if-no-files-found: error
+          retention-days: 14
