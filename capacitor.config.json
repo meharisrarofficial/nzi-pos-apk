@@ -1,0 +1,6 @@
+{
+  "appId": "com.nzi.pos",
+  "appName": "NZI POS",
+  "webDir": "www",
+  "server": { "androidScheme": "https" }
+}
